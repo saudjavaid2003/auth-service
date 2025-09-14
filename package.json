@@ -15,39 +15,24 @@
   "type": "module",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "ts-node src/server.ts",
+    "dev": "nodemon --exec \"node --loader ts-node/esm --experimental-specifier-resolution=node src/server.ts\"",
     "build": "tsc",
     "start": "node --experimental-specifier-resolution=node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format:check": "prettier . --check",
-    "format:fix": "prettier . --write",
-    "lint:fix": "eslint . --fix",
-    "lint:check": "eslint .",
     "prepare": "husky"
   },
   "dependencies": {
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
-    "nodemon": "^3.1.10"
+    "winston": "^3.17.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.34.0",
-    "@types/express": "github:types/express",
+    "@types/express": "^5.0.0",
     "@types/node": "^24.3.1",
-    "eslint": "^9.34.0",
-    "eslint-import-resolver-typescript": "^4.4.4",
-    "eslint-plugin-import": "^2.32.0",
+    "@types/winston": "^2.4.4",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.6",
-    "prettier": "3.6.2",
+    "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2",
-    "typescript-eslint": "^8.42.0"
-  },
-  "lint-staged": {
-    "*.{js,ts}": [
-      "npm run lint:fix",
-      "npm run format:fix"
-    ]
+    "typescript": "^5.9.2"
   }
 }

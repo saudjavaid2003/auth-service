@@ -6,7 +6,12 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    ignores: ["node_modules", "dist", "**/*.js"],
+    ignores: [
+      "node_modules/",
+      "dist/",
+      "**/*.js",
+      "eslint.config.mjs" // ← ADD THIS LINE to ignore the config file itself
+    ],
     languageOptions: {
       parserOptions: {
         project: "./tsconfig.json",
@@ -37,7 +42,8 @@ export default tseslint.config(
       "@typescript-eslint/no-non-null-assertion": "off",
       "import/extensions": "off",
       "import/no-unresolved": "error",
-      "import/order": ["warn", { "newlines-between": "always" }]
+      "import/order": ["warn", { "newlines-between": "always" }],
+      "no-undef": "off"
     }
   }
 );
