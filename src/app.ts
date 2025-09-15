@@ -5,10 +5,9 @@ import createHttpError, { HttpError } from "http-errors";
 
 const app = express();
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/",async  (req: Request, res: Response,next: NextFunction) => {
     const error = createHttpError(418, "This is a custom error message");
-    throw error;
-    res.send("Auth Service is up and running");
+    next(error);
 });
 
 // Error handling middleware
