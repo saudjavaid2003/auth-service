@@ -2,14 +2,14 @@ import express from "express";
 import logger from "./config/logger";
 import { Request, Response, NextFunction } from "express";
 import createHttpError, { HttpError } from "http-errors";
-
+import authroutes from "./routes/auth";
 const app = express();
 
 app.get("/",async  (req: Request, res: Response,next: NextFunction) => {
     const error = createHttpError(418, "This is a custom error message");
     next(error);
 });
-
+app.use("/auth",authroutes)
 
 
 // Error handling middleware
