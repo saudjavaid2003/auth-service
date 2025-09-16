@@ -10,6 +10,8 @@ app.get("/",async  (req: Request, res: Response,next: NextFunction) => {
     next(error);
 });
 
+
+
 // Error handling middleware
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message);

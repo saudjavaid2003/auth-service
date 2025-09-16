@@ -15,7 +15,8 @@
   "type": "module",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "nodemon --exec \"node --loader ts-node/esm --experimental-specifier-resolution=node src/server.ts\"",
+"dev": "nodemon",
+
     "build": "tsc",
     "start": "node --experimental-specifier-resolution=node dist/server.js",
     "test": "jest",
@@ -42,6 +43,7 @@
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.2"
   }
 }
