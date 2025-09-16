@@ -16,4 +16,19 @@ describe("POST /auth/register", () => {
 
     expect(response.statusCode).toBe(201);
   });
+
+  it("should return JSON with success message", async () => {
+    const userdata = {
+      firstname: "saudjavaid",
+      lastname: "akram",
+      email: "saudjavaid2003@gmail.com",
+      password: "terimaki",
+    };
+
+    const response = await request(app)
+      .post("/auth/register")
+      .send(userdata);
+
+    expect(response.body).toEqual({ message: "User registered successfully" });
+  });
 });
