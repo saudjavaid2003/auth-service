@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2022",
-    "lib": ["es2022"],
+    "lib": ["ES6"],
     "module": "ESNext",
     "moduleResolution": "node",
     "rootDir": "./src",
