@@ -15,8 +15,7 @@
   "type": "module",
   "main": "dist/server.js",
   "scripts": {
-"dev": "nodemon",
-
+    "dev": "nodemon",
     "build": "tsc",
     "start": "node --experimental-specifier-resolution=node dist/server.js",
     "test": "jest",
@@ -27,6 +26,9 @@
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "http-errors": "^2.0.0",
+    "pg": "^8.16.3",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.26",
     "winston": "^3.17.0"
   },
   "devDependencies": {
