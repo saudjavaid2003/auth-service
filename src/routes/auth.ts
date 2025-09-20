@@ -1,17 +1,18 @@
 import express from "express";
-import { Request, Response } from "express";
+import { Request, Response ,NextFunction} from "express";
 import { AuthController } from "../controllers/AuthController";
 import { UserService } from "../services/UserServices"; // ✅ Import UserService
 import { AppDataSource } from "../config/data-source";
 import { User } from "../entity/User";
-
+// import { Logger } from "winston";
+import logger from "../config/logger";
 const router = express.Router();
 const userRepository=AppDataSource.getRepository(User)
 const userService = new UserService(userRepository); // ✅ Create UserService instance
-const authController = new AuthController(userService); // ✅ Inject into AuthController
+const authController = new AuthController(userService,logger); // ✅ Inject into AuthController
 
-router.post("/register", (req: Request, res: Response) => {
-    authController.register(req as any, res); // You might need to type cast req
+router.post("/register", (req: Request, res: Response,next:NextFunction) => {
+    authController.register(req as any, res,next);
 });
 
 export default router;
