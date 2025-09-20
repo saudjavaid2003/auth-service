@@ -6,6 +6,9 @@ import { Request, Response, NextFunction } from "express";
 import createHttpError, { HttpError } from "http-errors";
 import authroutes from "./routes/auth";
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 app.get("/",async  (req: Request, res: Response,next: NextFunction) => {
     const error = createHttpError(418, "This is a custom error message");
