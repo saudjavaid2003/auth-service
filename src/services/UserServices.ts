@@ -3,13 +3,19 @@ import { AppDataSource } from "../config/data-source";
 import { UserData } from "../types";
 import { Repository } from "typeorm";
 import createHttpError from "http-errors";
-
+import { Roles } from "../constants/index";
 export class UserService {
     constructor(private userRepository: Repository<User>) {}
     
     async create({ firstName, lastName, email, password }: UserData): Promise<User> {
         try {
-            const user = this.userRepository.create({ firstName, lastName, email, password });
+            const user = this.userRepository.create({ 
+                    firstName
+                , lastName
+                , email, 
+                password ,
+                role: Roles.CUSTOMER
+            });
             return await this.userRepository.save(user);
         } catch (err) {
             const error = createHttpError(500, "database error");
