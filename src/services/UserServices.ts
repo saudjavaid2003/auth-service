@@ -4,16 +4,19 @@ import { UserData } from "../types";
 import { Repository } from "typeorm";
 import createHttpError from "http-errors";
 import { Roles } from "../constants/index";
+import bcrypt from "bcrypt";
 export class UserService {
     constructor(private userRepository: Repository<User>) {}
     
     async create({ firstName, lastName, email, password }: UserData): Promise<User> {
+        const salRounds=10
+        const hashPassword = await bcrypt.hash(password,salRounds);
         try {
             const user = this.userRepository.create({ 
                     firstName
                 , lastName
                 , email, 
-                password ,
+                password : hashPassword,
                 role: Roles.CUSTOMER
             });
             return await this.userRepository.save(user);
