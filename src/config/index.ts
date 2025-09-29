@@ -1,8 +1,13 @@
-import {config} from "dotenv";
+import { config } from "dotenv";
 import path from "path";
 
-config({path:path.join(__dirname, `../../.env.${process.env.NODE_ENV}`)}); // Adjust the path as necessary
-const { PORT,NODE_ENV,DB_HOST,DB_PORT,DB_USERNAME,DB_PASSWORD,DB_NAME,REFRESH_TOKEN_SECRET}=process.env;
+// Simple and compatible approach
+const envPath = path.join(process.cwd(), `.env.${process.env.NODE_ENV || "development"}`);
+
+config({ path: envPath });
+
+const { PORT, NODE_ENV, DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME, REFRESH_TOKEN_SECRET } = process.env;
+
 export const Config = {
     NODE_ENV,
     PORT,
@@ -11,5 +16,5 @@ export const Config = {
     DB_USERNAME,
     DB_PASSWORD,
     DB_NAME,
-    REFRESH_TOKEN_SECRET   
+    REFRESH_TOKEN_SECRET
 };

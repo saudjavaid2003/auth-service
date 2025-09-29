@@ -2,14 +2,15 @@ import { NextFunction, Request, Response } from "express";
 import fs from "fs";
 import path from "path";
 import { RegisterUserRequest } from "../types";
-import { UserService } from "../services/UserServices"; // Make sure import path is correct
+import { UserService } from "../services/UserServices";
 import { Logger } from "winston";
 import createHttpError from "http-errors";
-import {JwtPayload, sign} from "jsonwebtoken";
-import { validationResult as validatiornResult } from "express-validator";
-import { toString } from "express-validator/lib/utils";
-import { buffer } from "stream/consumers";
-import { Config } from "@/config";
+import jwt from "jsonwebtoken"; // Fixed import
+const { sign } = jwt; // Destructure sign
+import { validationResult } from "express-validator"; // Fixed typo
+import { Config } from "../config/index";
+import { AppDataSource } from "../config/data-source";
+import { RefreshToken } from "../entity/refreshToken"; // Import the actual entity
 
 export class AuthController {
     private userService: UserService;
@@ -19,7 +20,7 @@ export class AuthController {
     }
 
     async register(req: RegisterUserRequest, res: Response, next: NextFunction) {
-        const result = validatiornResult(req);
+        const result = validationResult(req); // Fixed typo
         if (!result.isEmpty()) {
             return res.status(400).json({ errors: result.array() });
         }
@@ -30,52 +31,72 @@ export class AuthController {
         });
 
         try {
-            const user = await this.userService.create({ firstName, lastName, email, password });
+            const user = await this.userService.create({ 
+                firstName, 
+                lastName, 
+                email, 
+                password 
+            });
             this.logger.info("user registered successfully", { id: user.id });
-            let privateKey:Buffer;
-            try{
-                privateKey=fs.readFileSync(path.join(__dirname,"../../certs/private.pem"));
-
-
-            }
-            catch(err){
-                const error=createHttpError(500,"unable to read private key");
+            
+            let privateKey: Buffer;
+            try {
+                privateKey = fs.readFileSync(
+                    path.join(__dirname, "../../certs/private.pem")
+                );
+            } catch (err) {
+                const error = createHttpError(500, "Unable to read private key");
                 next(error);
-                return ;
+                return;
             }
 
-            const payload:JwtPayload={
-                sub:toString(user.id),
-                role:user.role
+            const payload = { // Fixed: removed JwtPayload type if causing issues
+                sub: String(user.id), // Fixed: use String() instead of toString()
+                role: user.role
+            };
 
+            // Generate access token
+            const accessToken = sign(payload, privateKey, {
+                expiresIn: "1h",
+                algorithm: "RS256",
+                issuer: "auth-service",
+            });
+
+            // Check if refresh token secret is available
+            if (!Config.REFRESH_TOKEN_SECRET) {
+                const error = createHttpError(500, "Refresh token secret not configured");
+                next(error);
+                return;
             }
-            
 
-            const accessToken = sign(payload,privateKey,{
-                expiresIn:"1h",
-                algorithm:"RS256",
-                issuer:"auth-service",
-
-            });
-            
-
-            const refreshToken = sign(payload,Config.REFRESH_TOKEN_SECRET,{
-                algorithm:"HS256",
-                expiresIn:"7d",
-                issuer:"auth-service",
+            // Persist the refresh token in db
+            const MS_IN_YEAR = 1000 * 60 * 60 * 24 * 365;
+            const refreshTokenRepository = AppDataSource.getRepository(RefreshToken); // Use actual entity
+            const newRefreshToken = await refreshTokenRepository.save({
+                user: user,
+                expiresAt: new Date(Date.now() + MS_IN_YEAR),
             });
 
+            // Generate refresh token
+            const refreshToken = sign(payload, Config.REFRESH_TOKEN_SECRET, {
+                algorithm: "HS256",
+                expiresIn: "7d",
+                issuer: "auth-service",
+                jwtid: String(newRefreshToken.id), // link the refresh token to the db record
+            });
+
+            // Set cookies
             res.cookie("accessToken", accessToken, {
                 httpOnly: true,
-                domain: "localhost", // 🔹 use lowercase "domain"
-                maxAge: 1000 * 60 * 60, // 🔹 fixed "&" to "*"
-                sameSite: "lax",       // 🔹 fixed true → string value
+                domain: "localhost",
+                maxAge: 1000 * 60 * 60, // 1 hour
+                sameSite: "lax",
             });
 
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
                 domain: "localhost",
-                maxAge: 1000 * 60 * 60 * 24 * 7,
+                maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
                 sameSite: "lax",
             });
 

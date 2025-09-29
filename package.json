@@ -15,7 +15,7 @@
    "type": "module",
    "main": "dist/server.js",
    "scripts": {
-      "dev": "cross-env NODE_ENV=dev nodemon",
+     "dev": "cross-env NODE_ENV=dev nodemon",
       "build": "tsc",
       "start": "ts-node src/index.ts",
       "test": "jest",
