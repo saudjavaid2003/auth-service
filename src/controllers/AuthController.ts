@@ -9,6 +9,7 @@ import {JwtPayload, sign} from "jsonwebtoken";
 import { validationResult as validatiornResult } from "express-validator";
 import { toString } from "express-validator/lib/utils";
 import { buffer } from "stream/consumers";
+import { Config } from "@/config";
 
 export class AuthController {
     private userService: UserService;
@@ -58,7 +59,11 @@ export class AuthController {
             });
             
 
-            const refreshToken = "dummyRefresh";
+            const refreshToken = sign(payload,Config.REFRESH_TOKEN_SECRET,{
+                algorithm:"HS256",
+                expiresIn:"7d",
+                issuer:"auth-service",
+            });
 
             res.cookie("accessToken", accessToken, {
                 httpOnly: true,
