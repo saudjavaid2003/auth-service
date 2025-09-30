@@ -8,10 +8,16 @@ import { User } from "../entity/User";
 import logger from "../config/logger";
 import { body } from "express-validator";
 import registerValidator from "../validators/register-validator";
+import { TokenService } from "../services/TokenServices";
+import { RefreshToken } from "../entity/refreshToken";
 const router = express.Router();
 const userRepository=AppDataSource.getRepository(User)
-const userService = new UserService(userRepository); // ✅ Create UserService instance
-const authController = new AuthController(userService,logger); // ✅ Inject into AuthController
+const refreshTokenRepository=AppDataSource.getRepository(RefreshToken)
+
+const userService = new UserService(userRepository); 
+// ✅ Create UserService instance
+const tokenService=new TokenService(refreshTokenRepository); // ✅ Create TokenService instance
+const authController = new AuthController(userService,logger,tokenService); // ✅ Inject into AuthController
 
 router.post("/register",
     registerValidator,

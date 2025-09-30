@@ -1,12 +1,14 @@
 import { config } from "dotenv";
 import path from "path";
 
-// Simple and compatible approach
-const envPath = path.join(process.cwd(), `.env.${process.env.NODE_ENV || "development"}`);
+const envPath = path.join(__dirname, "../../.env.dev");
+console.log("Loading from:", envPath);
 
 config({ path: envPath });
 
 const { PORT, NODE_ENV, DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME, REFRESH_TOKEN_SECRET } = process.env;
+
+console.log("DB_PASSWORD loaded:", DB_PASSWORD ? "YES" : "NO");
 
 export const Config = {
     NODE_ENV,
@@ -16,5 +18,5 @@ export const Config = {
     DB_USERNAME,
     DB_PASSWORD,
     DB_NAME,
-    REFRESH_TOKEN_SECRET
+    REFRESH_TOKEN_SECRET,
 };

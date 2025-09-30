@@ -9,3 +9,7 @@
 export interface RegisterUserRequest extends Request{
     body: UserData;
 }
+export interface payload{
+    sub: string;
+    role: string;
+}

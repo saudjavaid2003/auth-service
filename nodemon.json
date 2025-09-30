@@ -2,7 +2,7 @@
   "watch": ["src"],
   "ext": "ts,json",
   "ignore": ["src/**/*.spec.ts", "dist/**/*", "node_modules"],
-  "exec": "node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node src/server.ts",
+  "exec": "ts-node src/server.ts",
   "legacyWatch": true,
   "pollingInterval": 1000,
   "stdin": false

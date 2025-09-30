@@ -5,17 +5,18 @@ import { RegisterUserRequest } from "../types";
 import { UserService } from "../services/UserServices";
 import { Logger } from "winston";
 import createHttpError from "http-errors";
-import jwt from "jsonwebtoken"; // Fixed import
+import jwt, { JwtPayload } from "jsonwebtoken"; // Fixed import
 const { sign } = jwt; // Destructure sign
 import { validationResult } from "express-validator"; // Fixed typo
 import { Config } from "../config/index";
 import { AppDataSource } from "../config/data-source";
 import { RefreshToken } from "../entity/refreshToken"; // Import the actual entity
+import { TokenService } from "../services/TokenServices";
 
 export class AuthController {
     private userService: UserService;
-    
-    constructor(userService: UserService, private logger: Logger) { 
+
+    constructor(userService: UserService, private logger: Logger, private tokenService: TokenService) {
         this.userService = userService;
     }
 
@@ -39,36 +40,17 @@ export class AuthController {
             });
             this.logger.info("user registered successfully", { id: user.id });
             
-            let privateKey: Buffer;
-            try {
-                privateKey = fs.readFileSync(
-                    path.join(__dirname, "../../certs/private.pem")
-                );
-            } catch (err) {
-                const error = createHttpError(500, "Unable to read private key");
-                next(error);
-                return;
-            }
-
-            const payload = { // Fixed: removed JwtPayload type if causing issues
+            const payload:JwtPayload = { // Fixed: removed JwtPayload type if causing issues
                 sub: String(user.id), // Fixed: use String() instead of toString()
                 role: user.role
             };
-
-            // Generate access token
-            const accessToken = sign(payload, privateKey, {
-                expiresIn: "1h",
-                algorithm: "RS256",
-                issuer: "auth-service",
-            });
-
+            const accessToken = this.tokenService.generateAccessToken(payload);
             // Check if refresh token secret is available
             if (!Config.REFRESH_TOKEN_SECRET) {
                 const error = createHttpError(500, "Refresh token secret not configured");
                 next(error);
                 return;
             }
-
             // Persist the refresh token in db
             const MS_IN_YEAR = 1000 * 60 * 60 * 24 * 365;
             const refreshTokenRepository = AppDataSource.getRepository(RefreshToken); // Use actual entity
@@ -76,15 +58,14 @@ export class AuthController {
                 user: user,
                 expiresAt: new Date(Date.now() + MS_IN_YEAR),
             });
-
-            // Generate refresh token
-            const refreshToken = sign(payload, Config.REFRESH_TOKEN_SECRET, {
-                algorithm: "HS256",
-                expiresIn: "7d",
-                issuer: "auth-service",
-                jwtid: String(newRefreshToken.id), // link the refresh token to the db record
+                       
+            const refreshToken = this.tokenService.generateRefreshToken({
+                ...payload,
+                id: String(newRefreshToken.id),
             });
 
+
+           
             // Set cookies
             res.cookie("accessToken", accessToken, {
                 httpOnly: true,
