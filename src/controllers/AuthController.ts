@@ -86,4 +86,18 @@ export class AuthController {
             next(err);
         }
     }
+    async login(req: RegisterUserRequest, res: Response, next: NextFunction) {
+        const result = validationResult(req); // Fixed typo
+        if (!result.isEmpty()) {
+            return res.status(400).json({ errors: result.array() });
+        }
+        const { email, password } = req.body;
+        this.logger.info("a new request to login a user", {
+            email,
+            password: "******"
+        });
+        
+
+    }
+
 }

@@ -10,6 +10,7 @@ import { body } from "express-validator";
 import registerValidator from "../validators/register-validator";
 import { TokenService } from "../services/TokenServices";
 import { RefreshToken } from "../entity/refreshToken";
+import loginValidator from "../validators/login-validator";
 const router = express.Router();
 const userRepository=AppDataSource.getRepository(User)
 const refreshTokenRepository=AppDataSource.getRepository(RefreshToken)
@@ -28,6 +29,14 @@ router.post("/register",
     }
 );
 
+router.post("/login",
+    loginValidator,
+    
+
+    (req: Request, res: Response, next: NextFunction) => {
+        authController.login(req as any, res, next);
+    }
+);
 
 
 export default router;
