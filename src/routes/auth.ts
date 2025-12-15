@@ -11,14 +11,16 @@ import registerValidator from "../validators/register-validator";
 import { TokenService } from "../services/TokenServices";
 import { RefreshToken } from "../entity/refreshToken";
 import loginValidator from "../validators/login-validator";
+import { CredentialService } from "../services/credentialService";
 const router = express.Router();
 const userRepository=AppDataSource.getRepository(User)
 const refreshTokenRepository=AppDataSource.getRepository(RefreshToken)
 
 const userService = new UserService(userRepository); 
+const credentialService=new CredentialService()
 // ✅ Create UserService instance
 const tokenService=new TokenService(refreshTokenRepository); // ✅ Create TokenService instance
-const authController = new AuthController(userService,logger,tokenService); // ✅ Inject into AuthController
+const authController = new AuthController(userService,logger,tokenService,credentialService); // ✅ Inject into AuthController
 
 router.post("/register",
     registerValidator,
@@ -31,8 +33,6 @@ router.post("/register",
 
 router.post("/login",
     loginValidator,
-    
-
     (req: Request, res: Response, next: NextFunction) => {
         authController.login(req as any, res, next);
     }

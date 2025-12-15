@@ -53,7 +53,9 @@ describe("POST /auth/login", () => {
             // Assert
             let accessToken = null;
             let refreshToken = null;
-            const cookies = (response.headers as Headers)["set-cookie"] || [];
+            const cookies = response.headers["set-cookie"] as unknown as string[] | undefined;
+
+
             cookies.forEach((cookie) => {
                 if (cookie.startsWith("accessToken=")) {
                     accessToken = cookie.split(";")[0].split("=")[1];

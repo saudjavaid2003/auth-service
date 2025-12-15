@@ -12,12 +12,18 @@ import { Config } from "../config/index";
 import { AppDataSource } from "../config/data-source";
 import { RefreshToken } from "../entity/refreshToken"; // Import the actual entity
 import { TokenService } from "../services/TokenServices";
+import { CredentialService } from "@/services/credentialService";
 
 export class AuthController {
-    private userService: UserService;
+  
+    
 
-    constructor(userService: UserService, private logger: Logger, private tokenService: TokenService) {
-        this.userService = userService;
+    constructor( private userService: UserService,
+         private logger: Logger,
+          private tokenService: TokenService,
+          private credentialService: CredentialService
+        ) {
+    
     }
 
     async register(req: RegisterUserRequest, res: Response, next: NextFunction) {
@@ -58,14 +64,10 @@ export class AuthController {
                 user: user,
                 expiresAt: new Date(Date.now() + MS_IN_YEAR),
             });
-                       
             const refreshToken = this.tokenService.generateRefreshToken({
                 ...payload,
                 id: String(newRefreshToken.id),
             });
-
-
-           
             // Set cookies
             res.cookie("accessToken", accessToken, {
                 httpOnly: true,
@@ -96,6 +98,70 @@ export class AuthController {
             email,
             password: "******"
         });
+        try{
+            const user=await this.userService.findByEnail(email)
+            if(!user){
+                const error=createHttpError(400,"email is not registered")
+                next(error)
+                return
+            }
+            const passwordMatch= await this.credentialService.comparePassword(password,user.password)
+            if(!passwordMatch){
+                const error=createHttpError(400,"email or password is incorrect")
+                next(error)
+                return
+            }
+            
+            const payload:JwtPayload = { // Fixed: removed JwtPayload type if causing issues
+                sub: String(user.id), // Fixed: use String() instead of toString()
+                role: user.role
+            };
+            const accessToken = await  this.tokenService.generateAccessToken(payload);
+            // Check if refresh token secret is available
+            if (!Config.REFRESH_TOKEN_SECRET) {
+                const error = createHttpError(500, "Refresh token secret not configured");
+                next(error);
+                return;
+            }
+            // Persist the refresh token in db
+            const MS_IN_YEAR = 1000 * 60 * 60 * 24 * 365;
+            const refreshTokenRepository = AppDataSource.getRepository(RefreshToken); // Use actual entity
+            const newRefreshToken = await refreshTokenRepository.save({
+                user: user,
+                expiresAt: new Date(Date.now() + MS_IN_YEAR),
+            });
+                       
+            const refreshToken = await this.tokenService.generateRefreshToken({
+                ...payload,
+                id: String(newRefreshToken.id),
+            });
+
+
+           
+            // Set cookies
+            res.cookie("accessToken", accessToken, {
+                httpOnly: true,
+                domain: "localhost",
+                maxAge: 1000 * 60 * 60, // 1 hour
+                sameSite: "lax",
+            });
+
+            res.cookie("refreshToken", refreshToken, {
+                httpOnly: true,
+                domain: "localhost",
+                maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+                sameSite: "lax",
+            });
+            this.logger.info("User has been logged in", { id: user.id });
+
+            res.status(201).json({ id: user.id });
+
+
+
+        }
+        catch(err){
+            next(err)
+        }
         
 
     }

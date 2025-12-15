@@ -29,4 +29,8 @@ export class UserService {
             throw error;
         }
     } // ✅ Added missing closing bracket for create method
+
+async findByEnail(email:string){
+    return await this.userRepository.findOne({where:{email:email}})
+}
 } // ✅ Added missing closing bracket for UserService class
