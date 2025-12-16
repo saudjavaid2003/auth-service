@@ -46,9 +46,9 @@ describe("GET /auth/self", () => {
         it("should return the user data", async () => {
             // Register user
             const userData = {
-                firstName: "Rakesh",
+                firstName: "saud",
                 lastName: "K",
-                email: "rakesh@mern.space",
+                email: "saudjavaid2003@gmail.com",
                 password: "password",
             };
             const userRepository = connection.getRepository(User);
@@ -75,9 +75,9 @@ describe("GET /auth/self", () => {
         it("should not return the password field", async () => {
             // Register user
             const userData = {
-                firstName: "Rakesh",
+                firstName: "saud",
                 lastName: "K",
-                email: "rakesh@mern.space",
+                email: "saudjavaid2003@gmail.com",
                 password: "password",
             };
             const userRepository = connection.getRepository(User);
@@ -106,9 +106,9 @@ describe("GET /auth/self", () => {
         it("should return 401 status code if token does not exists", async () => {
             // Register user
             const userData = {
-                firstName: "Rakesh",
+                firstName: "saud",
                 lastName: "K",
-                email: "rakesh@mern.space",
+                email: "saudjavaid2003@gmail.com",
                 password: "password",
             };
             const userRepository = connection.getRepository(User);
