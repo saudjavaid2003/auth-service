@@ -12,7 +12,7 @@ import { Config } from "../config/index";
 import { AppDataSource } from "../config/data-source";
 import { RefreshToken } from "../entity/refreshToken"; // Import the actual entity
 import { TokenService } from "../services/TokenServices";
-import { CredentialService } from "@/services/credentialService";
+import {CredentialService} from "../services/CredentialService"
 
 export class AuthController {
   
@@ -154,7 +154,7 @@ export class AuthController {
             });
             this.logger.info("User has been logged in", { id: user.id });
 
-            res.status(201).json({ id: user.id });
+            res.status(200).json({ id: user.id });
 
 
 
@@ -165,5 +165,12 @@ export class AuthController {
         
 
     }
+
+    // self handler 
+
+    async self(req: Request, res: Response, next: NextFunction){
+        res.json({})
+    }
+    
 
 }

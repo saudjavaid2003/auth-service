@@ -2,14 +2,24 @@
 module.exports = {
   testEnvironment: "node",
   preset: "ts-jest",
-     silent: true, // Suppress console logs during tests
-         verbose: false,
+
+  // Run tests sequentially
+  maxWorkers: 1,
+  
   transform: {
     "^.+\\.tsx?$": "ts-jest",
   },
-  moduleNameMapping: {
+
+  moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
+
   testMatch: ["**/tests/**/*.spec.ts"],
+
   collectCoverageFrom: ["src/**/*.ts", "!src/**/*.d.ts"],
+
+  // ⚠️ REMOVE THIS LINE (or create the file):
+  // setupFilesAfterEnv: ["<rootDir>/tests/setup.ts"], 
+  
+  testTimeout: 30000,
 };
