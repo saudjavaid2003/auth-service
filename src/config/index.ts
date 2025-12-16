@@ -6,7 +6,7 @@ console.log("Loading from:", envPath);
 
 config({ path: envPath });
 
-const { PORT, NODE_ENV, DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME, REFRESH_TOKEN_SECRET } = process.env;
+const { PORT, NODE_ENV, DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME, REFRESH_TOKEN_SECRET, JWKS_URI } = process.env;
 
 console.log("DB_PASSWORD loaded:", DB_PASSWORD ? "YES" : "NO");
 
@@ -19,4 +19,5 @@ export const Config = {
     DB_PASSWORD,
     DB_NAME,
     REFRESH_TOKEN_SECRET,
+    JWKS_URI,
 };

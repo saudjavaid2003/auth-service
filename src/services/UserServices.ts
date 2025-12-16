@@ -33,4 +33,13 @@ export class UserService {
 async findByEnail(email:string){
     return await this.userRepository.findOne({where:{email:email}})
 }
+async findById(id: number) {
+        return await this.userRepository.findOne({
+            where: {
+                id,
+            },
+           
+        });
+    }
+
 } // ✅ Added missing closing bracket for UserService class

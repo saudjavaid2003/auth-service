@@ -13,7 +13,7 @@ import { AppDataSource } from "../config/data-source";
 import { RefreshToken } from "../entity/refreshToken"; // Import the actual entity
 import { TokenService } from "../services/TokenServices";
 import {CredentialService} from "../services/CredentialService"
-
+import { AuthRequest } from "../types";
 export class AuthController {
   
     
@@ -168,9 +168,11 @@ export class AuthController {
 
     // self handler 
 
-    async self(req: Request, res: Response, next: NextFunction){
+    async self(req: AuthRequest, res: Response, next: NextFunction){
+        const user = await this.userService.findById(Number(req.auth.sub))
+
         res.json({})
     }
-    
+
 
 }
