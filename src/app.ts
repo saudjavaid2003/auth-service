@@ -7,9 +7,9 @@ import createHttpError, { HttpError } from "http-errors";
 import cookieParser from "cookie-parser";
 import authroutes from "./routes/auth";
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
 app.get("/",async  (req: Request, res: Response,next: NextFunction) => {
     const error = createHttpError(418, "This is a custom error message");
