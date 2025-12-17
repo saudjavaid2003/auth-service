@@ -2,7 +2,6 @@ import { expressjwt, GetVerificationKey } from "express-jwt";
 import { Request } from "express";
 import jwksClient from "jwks-rsa";
 import { Config } from "../config";
-import { AuthCookie } from "../types";
 
 export default expressjwt({
   secret: jwksClient.expressJwtSecret({
@@ -12,11 +11,19 @@ export default expressjwt({
   }) as GetVerificationKey,
   algorithms: ["RS256"],
   getToken(req: Request) {
+    // First, check for Authorization header
     const authHeader = req.headers.authorization;
     if (authHeader && authHeader.split(" ")[1] !== "undefined") {
-      return authHeader.split(" ")[1];
+      const tokenFromHeader = authHeader.split(" ")[1];
+      console.log("Token from Authorization header:", tokenFromHeader);
+      return tokenFromHeader;
     }
-    const { accessToken } = req.cookies as AuthCookie;
-    return accessToken;
+
+    // Then, check cookies
+    const tokenFromCookie = req.cookies?.accessToken; // exact case-sensitive name
+    console.log("Cookies:", req.cookies);
+    console.log("Token from cookie:", tokenFromCookie);
+
+    return tokenFromCookie; // will return undefined if cookie is missing
   },
 });

@@ -9,6 +9,7 @@ import authroutes from "./routes/auth";
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.static("public"))
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/",async  (req: Request, res: Response,next: NextFunction) => {
