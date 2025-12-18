@@ -15,13 +15,15 @@
   "type": "commonjs",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon",
+    "dev": "cross-env NODE_ENV=dev nodemon",
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "prepare": "husky",
-    "typeorm": "typeorm-ts-node-commonjs"
+     "migration:generate": "typeorm-ts-node-commonjs migration:generate",
+      "migration:run": "typeorm-ts-node-commonjs migration:run",
+       "migration:create": "typeorm-ts-node-commonjs migration:create"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
