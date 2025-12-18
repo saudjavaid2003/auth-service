@@ -167,9 +167,7 @@ export class AuthController {
     }
 
     // self handler 
-    
-  
-  async self(req: AuthRequest, res: Response) {
+    async self(req: AuthRequest, res: Response) {
     console.log("Cookies:", req.cookies);
     console.log("Auth object:", req.auth);
 
@@ -194,6 +192,10 @@ export class AuthController {
       role: user.role,
       password: undefined, // never return password
     });
+  }
+  async refresh(req:Request,res:Response,next:NextFunction){
+    return res.json({message:"refresh token"})
+    
   }
 
 }
