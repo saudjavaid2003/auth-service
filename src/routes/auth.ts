@@ -15,6 +15,8 @@ import { CredentialService } from "../services/CredentialService";
 // import authenticate from "../middlewares/authenticate";
 import { AuthRequest } from "../types";
 import authenticate from "../middlewares/authenticate";
+import { validateHeaderName } from "http";
+import validateRefreshToken from "@/middlewares/validateRefreshToken";
 
 const router = express.Router();
 const userRepository=AppDataSource.getRepository(User)
@@ -45,8 +47,8 @@ router.post("/login",
 router.get("/self", authenticate, (req: Request, res: Response,) => {
     authController.self(req as AuthRequest, res, );
 });
-router.get("/refresh", (req: Request, res: Response,next:NextFunction) => {
-    authController.refresh(req  , res, next);
+router.get("/refresh",validateRefreshToken, (req: Request, res: Response,next:NextFunction) => {
+    authController.refresh(req as AuthRequest, res, next);
 });
 
 

@@ -13,7 +13,9 @@ export default expressjwt({
         const { refreshToken } = req.cookies as AuthCookie;
         return refreshToken;
     },
+    
     async isRevoked(request: Request, token) {
+        console.log("Validating refresh token:", token);
         try {
             const refreshTokenRepo = AppDataSource.getRepository(RefreshToken);
             const refreshToken = await refreshTokenRepo.findOne({
