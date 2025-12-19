@@ -33,3 +33,15 @@ export interface IRefreshTokenPayload {
     id: string;
 }
 
+export interface ITenant {
+    name: string;
+    address: string;
+}
+export interface TenantQueryParams {
+    q: string;
+    perPage: number;
+    currentPage: number;
+}
+export interface CreateTenantRequest extends Request {
+    body: ITenant;
+}
