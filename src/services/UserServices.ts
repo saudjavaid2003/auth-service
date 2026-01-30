@@ -3,12 +3,12 @@ import { AppDataSource } from "../config/data-source";
 import { UserData } from "../types";
 import { Repository } from "typeorm";
 import createHttpError from "http-errors";
-import { Roles } from "../constants/index";
 import bcrypt from "bcrypt";
 export class UserService {
     constructor(private userRepository: Repository<User>) {}
     
-    async create({ firstName, lastName, email, password }: UserData): Promise<User> {
+    async create({ firstName, lastName, email, password,role }: UserData): Promise<User> {
+
         const user=await this.userRepository.findOne({where:{email:email}})
         if(user){
             throw createHttpError(400,"user already registered with this email")
@@ -21,7 +21,7 @@ export class UserService {
                 , lastName
                 , email, 
                 password : hashPassword,
-                role: Roles.CUSTOMER
+                role
             });
             return await this.userRepository.save(user);
         } catch (err) {

@@ -7,6 +7,7 @@ import createHttpError, { HttpError } from "http-errors";
 import cookieParser from "cookie-parser";
 import authroutes from "./routes/auth";
 import tenantrouter from"./routes/tenant"
+import userrouter from "./routes/user"
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
@@ -19,6 +20,8 @@ app.get("/",async  (req: Request, res: Response,next: NextFunction) => {
 });
 app.use("/auth",authroutes)
 app.use("/tenant",tenantrouter)
+app.use("/user",userrouter)
+
 
 
 // Error handling middleware

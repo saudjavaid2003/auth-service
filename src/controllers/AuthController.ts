@@ -14,6 +14,7 @@ import { RefreshToken } from "../entity/refreshToken"; // Import the actual enti
 import { TokenService } from "../services/TokenServices";
 import {CredentialService} from "../services/CredentialService"
 import { AuthRequest } from "../types";
+import { Roles } from "../constants";
 export class AuthController {
   
     
@@ -42,7 +43,8 @@ export class AuthController {
                 firstName, 
                 lastName, 
                 email, 
-                password 
+                password ,
+                role:Roles.CUSTOMER
             });
             this.logger.info("user registered successfully", { id: user.id });
             
