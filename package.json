@@ -16,6 +16,7 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=dev nodemon",
+    
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "jest",
