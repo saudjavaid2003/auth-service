@@ -101,7 +101,7 @@ export class AuthController {
             password: "******"
         });
         try{
-            const user=await this.userService.findByEnail(email)
+            const user=await this.userService.findByEmailWithPassword(email)
             if(!user){
                 const error=createHttpError(400,"email is not registered")
                 next(error)
