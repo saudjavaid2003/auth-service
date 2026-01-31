@@ -11,12 +11,26 @@ jobs:
   build-and-test:
     name: Build the project
     runs-on: ubuntu-latest
-    env: # ✅ Attach secrets at the job level so all steps can see them
-      DB_HOST: ${{ secrets.TEST_DB_HOST }}
-      DB_PORT: ${{ secrets.TEST_DB_PORT }}
-      DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-      DB_NAME: ${{ secrets.TEST_DB_NAME }}
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U test_user"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USERNAME: test_user
+      DB_PASSWORD: test_password
+      DB_NAME: test_db
       REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
       JWKS_URI: ${{ secrets.JWKS_URI }}
       PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
@@ -31,16 +45,13 @@ jobs:
           echo "DB_HOST is set? ${DB_HOST:+YES}"
           echo "DB_PORT is set? ${DB_PORT:+YES}"
           echo "DB_USERNAME is set? ${DB_USERNAME:+YES}"
-          echo "DB_NAME is set? ${DB_NAME:+YES}"
           echo "REFRESH_TOKEN_SECRET is set? ${REFRESH_TOKEN_SECRET:+YES}"
           echo "JWKS_URI is set? ${JWKS_URI:+YES}"
-          echo "PRIVATE_KEY is set? ${PRIVATE_KEY:+YES}"
 
-      - name: Test DB connection
+      - name: Test Postgres connection
         run: |
           echo "Testing Postgres connection..."
-          echo "Connecting to $DB_HOST:$DB_PORT as $DB_USERNAME"
-          PGPASSWORD="$DB_PASSWORD" pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME"
+          PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USERNAME -d $DB_NAME -c "\l"
 
       - name: Test and coverage
         run: npm run test
