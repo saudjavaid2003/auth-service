@@ -37,10 +37,10 @@ jobs:
 
     build-and-push-docker:
         name: Build and Push Docker Image
-        # needs: build-and-test
+        needs: build-and-test
         runs-on: ubuntu-latest
         env:
-            IMAGE_NAME: saudjavaidakram/mernstack_auth_service 
+            IMAGE_NAME: saudjavaidakram/mernstack_auth_service # codersgyan/mernstack_auth_service:build-2
             IMAGE_TAG: build-${{ github.run_number }}
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         steps:
