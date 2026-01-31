@@ -8,17 +8,27 @@ import { Config } from "../config";
 import { RefreshToken } from "../entity/refreshToken";
 import { User } from "../entity/User";
 import { Repository } from "typeorm";
+import { config } from "dotenv";
+
+
+
 
 export class TokenService {
     constructor(private refreshTokenRepository: Repository<RefreshToken>) {}
     
     generateAccessToken(payload: JwtPayload) {
-        let privateKey: Buffer;
+        let privateKey: string;
+        if(!Config.PRIVATE_KEY){
+             const error = createHttpError(
+                500,
+                "secret key not set ",
+            );
+            throw error;
+
+        }
 
         try {
-            privateKey = fs.readFileSync(
-                path.join(__dirname, "../../certs/private.pem"), // ← Use __dirname
-            );
+            privateKey =Config.PRIVATE_KEY!;
         } catch (err) {
             const error = createHttpError(
                 500,
