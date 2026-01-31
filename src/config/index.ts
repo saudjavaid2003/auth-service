@@ -12,7 +12,7 @@ const envPath = path.resolve(
 console.log("Loading env from:", envPath);
 
 config({ path: envPath });
-
+/// yahan per fixing ha ek yad rukahian wo private key wali ha jo k ab hum .env file sy le rahay hn
 const {
   PORT,
   DB_HOST,
