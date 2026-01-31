@@ -11,6 +11,15 @@ jobs:
   build-and-test:
     name: Build the project
     runs-on: ubuntu-latest
+    env: # ✅ Attach secrets at the job level so all steps can see them
+      DB_HOST: ${{ secrets.TEST_DB_HOST }}
+      DB_PORT: ${{ secrets.TEST_DB_PORT }}
+      DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
+      DB_NAME: ${{ secrets.TEST_DB_NAME }}
+      REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
+      JWKS_URI: ${{ secrets.JWKS_URI }}
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
     steps:
       - uses: actions/checkout@v3
 
@@ -25,26 +34,16 @@ jobs:
           echo "DB_NAME is set? ${DB_NAME:+YES}"
           echo "REFRESH_TOKEN_SECRET is set? ${REFRESH_TOKEN_SECRET:+YES}"
           echo "JWKS_URI is set? ${JWKS_URI:+YES}"
+          echo "PRIVATE_KEY is set? ${PRIVATE_KEY:+YES}"
 
       - name: Test DB connection
         run: |
           echo "Testing Postgres connection..."
-          # Only log the host and port, not the password
           echo "Connecting to $DB_HOST:$DB_PORT as $DB_USERNAME"
-          # Test connectivity without revealing sensitive info
-          pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME"
+          PGPASSWORD="$DB_PASSWORD" pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME"
 
       - name: Test and coverage
         run: npm run test
-        env:
-          DB_HOST: ${{ secrets.TEST_DB_HOST }}
-          DB_PORT: ${{ secrets.TEST_DB_PORT }}
-          DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-          DB_NAME: ${{ secrets.TEST_DB_NAME }}
-          REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
-          JWKS_URI: ${{ secrets.JWKS_URI }}
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
 
       - name: Build-ts
         run: npm run build
