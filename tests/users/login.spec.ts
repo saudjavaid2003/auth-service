@@ -1,5 +1,7 @@
 import { DataSource } from "typeorm";
 import bcrypt from "bcryptjs";
+// tests/users/register.spec.ts - Add this at the very top
+import { describe, beforeAll, beforeEach, afterAll, afterEach, it, expect } from '@jest/globals';
 import request from "supertest";
 import { AppDataSource } from "../../src/config/data-source";
 import app from "../../src/app";

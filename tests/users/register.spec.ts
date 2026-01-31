@@ -6,6 +6,8 @@ import { truncateTables } from "../utils";
 import { before } from "node:test";
 import { User } from "../../src/entity/User";
 import { RefreshToken } from "../../src/entity/refreshToken";
+// tests/users/register.spec.ts - Add this at the very top
+import { describe, beforeAll, beforeEach, afterAll, afterEach, it, expect } from '@jest/globals';
 import { Roles } from "../../src/constants/index";
 import { isJwt } from "../utils";
 describe("POST /auth/register", () => {
@@ -20,7 +22,7 @@ describe("POST /auth/register", () => {
         await connection.synchronize();
     
     });
-
+/// ma choday dunya 
     afterAll(async () => {
         await connection.destroy();
     });
