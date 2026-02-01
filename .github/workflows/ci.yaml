@@ -26,7 +26,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     env:
-      DB_HOST: postgres
+      DB_HOST: localhost       # <-- changed from 'postgres'
       DB_PORT: 5432
       DB_USERNAME: test_user
       DB_PASSWORD: test_password
