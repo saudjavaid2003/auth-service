@@ -8,7 +8,12 @@ import cookieParser from "cookie-parser";
 import authroutes from "./routes/auth";
 import tenantrouter from"./routes/tenant"
 import userrouter from "./routes/user"
+import cors from "cors"
 const app = express();
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}))
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.static("public"))
