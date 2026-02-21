@@ -20,6 +20,7 @@
     "start": "node dist/server.js",
     "test": "jest",
     "test:watch": "jest --watch",
+      "seed": "ts-node src/seed.ts",
     "prepare": "husky",
     "migration:generate": "typeorm-ts-node-commonjs migration:generate",
     "migration:run": "typeorm-ts-node-commonjs migration:run",
