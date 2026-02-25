@@ -31,6 +31,7 @@ const authController = new AuthController(userService,logger,tokenService,creden
 
 router.post("/register",
     registerValidator,
+ 
     
 
     (req: Request, res: Response, next: NextFunction) => {

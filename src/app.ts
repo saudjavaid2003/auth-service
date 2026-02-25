@@ -25,7 +25,7 @@ app.get("/",async  (req: Request, res: Response,next: NextFunction) => {
 });
 app.use("/auth",authroutes)
 app.use("/tenant",tenantrouter)
-app.use("/user",userrouter)
+app.use("/users",userrouter)
 
 
 

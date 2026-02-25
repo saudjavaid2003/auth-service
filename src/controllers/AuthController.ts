@@ -172,28 +172,8 @@ export class AuthController {
     async self(req: AuthRequest, res: Response) {
     console.log("Cookies:", req.cookies);
     console.log("Auth object:", req.auth);
-
-    // Check if JWT middleware decoded the token
-    if (!req.auth || !req.auth.sub) {
-      console.error("Token is missing or invalid");
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    const userId = Number(req.auth.sub); // Convert to number
-    const user = await this.userService.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.json({
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      role: user.role,
-      password: undefined, // never return password
-    });
+    const user = await this.userService.findById(Number(req.auth.sub));
+        res.json({ ...user, password: undefined });
   }
    async refresh(req: AuthRequest, res: Response, next: NextFunction) {
         try {
