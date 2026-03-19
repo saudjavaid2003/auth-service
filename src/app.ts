@@ -24,7 +24,7 @@ app.get("/",async  (req: Request, res: Response,next: NextFunction) => {
     next(error);
 });
 app.use("/auth",authroutes)
-app.use("/tenant",tenantrouter)
+app.use("/tenants",tenantrouter)
 app.use("/users",userrouter)
 
 
@@ -41,5 +41,5 @@ app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
         status: statusCode
     });
 });
-
+ 
 export default app;
