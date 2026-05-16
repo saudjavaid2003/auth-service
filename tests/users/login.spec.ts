@@ -1,6 +1,5 @@
 import { DataSource } from "typeorm";
 import bcrypt from "bcryptjs";
-// tests/users/register.spec.ts - Add this at the very top
 import { describe, beforeAll, beforeEach, afterAll, afterEach, it, expect } from '@jest/globals';
 import request from "supertest";
 import { AppDataSource } from "../../src/config/data-source";
@@ -14,19 +13,13 @@ describe("POST /auth/login", () => {
 
     beforeAll(async () => {
         connection = await AppDataSource.initialize();
-        // Sync database once
         await connection.synchronize();
     });
 
     beforeEach(async () => {
-        // DISABLE foreign key constraints temporarily
         await connection.query('ALTER TABLE "refreshTokens" DISABLE TRIGGER ALL;');
-        
-        // Delete all records using raw SQL (in correct order)
         await connection.query('DELETE FROM "refreshTokens";');
         await connection.query('DELETE FROM "users";');
-        
-        // RE-ENABLE foreign key constraints
         await connection.query('ALTER TABLE "refreshTokens" ENABLE TRIGGER ALL;');
     });
 
@@ -38,10 +31,10 @@ describe("POST /auth/login", () => {
         it("should return the access token and refresh token inside a cookie", async () => {
             // Arrange
             const userData = {
-                firstName: "Rakesh",
-                lastName: "K",
-                email: "rakesh@mern.space",
-                password: "password",
+                firstName: "Test",
+                lastName: "User",
+                email: "testuser@example.com",
+                password: "testPassword123",
             };
 
             const hashedPassword = await bcrypt.hash(userData.password, 10);
@@ -57,7 +50,7 @@ describe("POST /auth/login", () => {
                 .post("/auth/login")
                 .send({ email: userData.email, password: userData.password });
 
-            // Assert - Check login succeeded first
+            // Assert
             expect(response.statusCode).toBe(200);
 
             const setCookieHeader = response.headers["set-cookie"];
@@ -65,7 +58,6 @@ describe("POST /auth/login", () => {
                 ? setCookieHeader
                 : (setCookieHeader ? [setCookieHeader] : []);
 
-            // Check cookies exist
             expect(cookies.length).toBeGreaterThan(0);
 
             let accessToken: string | null = null;
@@ -89,10 +81,10 @@ describe("POST /auth/login", () => {
         it("should return 400 if email or password is wrong", async () => {
             // Arrange
             const userData = {
-                firstName: "Rakesh",
-                lastName: "K",
-                email: "rakesh@mern.space",
-                password: "password",
+                firstName: "Test",
+                lastName: "User",
+                email: "testuser@example.com",
+                password: "testPassword123",
             };
 
             const hashedPassword = await bcrypt.hash(userData.password, 10);

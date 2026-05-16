@@ -1,0 +1,43 @@
+Auth+service 
+middlewares 
+authenticate is may bas token ko lay ker req.auth kay ender dhal rahay hain ma nay header per bhi check lgaya ha aur cokkies per header per is liya kiounkay postman may headers hotay hain aur mobile app may  bhi 
+canAcess: jo ha wo ek clousre ha yad rukhain to jo inner function ha wo actual 
+middleware ha roles.Acess["ADMIN] pass kernay kay liya ek outer function banaya ha sahi ha 
+controllers:
+Auth controller aisa kuch nai jo tujay smaj na ay aur ma refrsh toekn ko db kay ender hi save ker raha houn abhi kay liya revoke bhi wohin say ho gha to hath bhi na lghain plz 
+rsa 256 acess token ka algo 
+hs256 refresh token kay liya sahi aur na in algos ko charain sahi kiounkay hs256 asymmetric ha yani uska secret hamesha auth service kay pass rhaay gha 
+Entity:
+jo refreshtoekn ha uska manytoone relation ha User kay sath sahi 
+same tenant ka user kay sath manytoOne 
+aur datasource wali file per ma nay synchronize true kia ha lekin wo isliya kiounkay bar bar mujay 
+schema strucutre change kerna parhta tha 
+lekin plzzzzzzzzzzzzz migration karain commands package.json may hain 
+sahi 
+seed.ts 
+admin bana day ghi db may kiounkay iskay koi controller nai hain 
+convertpemtojwks :
+ya jo ha wo public file jo pem format may ha usko json may bana rahi ha bas smaj lein shaid zarorat par jay tujay 
+docker ka fillhall koi chakkar nai ha 
+mujay ab yad nai ha exactly ma nay sahid iski updated file docker hub per dhali nai to chup ker kay npm i 
+
+
+
+eslint ki koi zarorat nai ha wo bas awein ek file ha ai smaj uska package uninstall kerdiya tha bohat tneg ker raha tha 
+nvmrc bhi same meray computer may setup nai ho raha windows curses to tum bhi na kerna 
+tsconfig.json ko dekh lein 
+
+bas yahi ha sub auth service kay liya jo bhi karian validator banain requesat ko saaf krain bro second params ko number may convert ker lein kuch masla ah raha tha api may jah ker 
+
+baki most important details batata houn ruk 
+
+sun gour say ek file tokenservice.ts 
+ma na private key ko file say read ker raha to jub code push kerna hoto usko config say read karain nai to 
+jo github action kay runners hain unko wo nai milay ghi aur pipline stop ho jay ghi thori si chawal ha lekin guzara ker lay 
+aur jub kam kerna ho to usko file say read ker lein ma code bhej doun gha whatsapp per 
+jo pipleine ha wo kud dockerhub per iamge bhi bana rahi ha to pull ker kay contianer chala ker 
+service use ker lein lekin na phir tujay private key ko .env.dev kay sath comand kay sath contianer run kerna paray gha 
+lekin fiada is liya nai kiounkay usko jwks endpoint nai mil raha wo public folder aky ender ha aur usko nai mil raha 
+docker .host.intenral kernay say chal raha contianer lekin koi endpoint workn nai karay gha jwks ka error ay ga 
+to sun gour say jub code push kerna to bas tokenservice ki file may jah ker private key ko config  say read ker 
+aur npm run dev kertay hoay certs file say bas ya 

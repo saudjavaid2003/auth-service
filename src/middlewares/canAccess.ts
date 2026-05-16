@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthRequest } from "../types";
 import createHttpError from "http-errors";
+// yahan clousre banana parh gaya lekin ya sahi ha 
 
 export const canAccess = (roles: string[]) => {
     return (req: Request, res: Response, next: NextFunction) => {

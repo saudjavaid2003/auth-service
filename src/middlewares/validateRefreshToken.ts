@@ -13,7 +13,7 @@ export default expressjwt({
         const { refreshToken } = req.cookies as AuthCookie;
         return refreshToken;
     },
-    
+    // isreviked is getting token from getToken and then we can validate it and decide if we want to revoke it or not, if we return true 
     async isRevoked(request: Request, token) {
         console.log("Validating refresh token:", token);
         try {

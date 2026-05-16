@@ -25,6 +25,7 @@ export default checkSchema({
         isLength: {
             options: { min: 8 },
             errorMessage: "Password must be at least 8 characters long",
+            //todo yahan thori aur validation especsailly wo regex wali aisay kuch bhi accept kari jah raha ha 
         },
     },
 });
