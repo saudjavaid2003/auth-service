@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",// isko sahi kerna abhi chalnay do 
-    
     "target": "ES2020",
     "lib": ["ES2020"],
     "module": "CommonJS",
