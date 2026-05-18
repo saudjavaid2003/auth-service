@@ -97,14 +97,14 @@ export class AuthController {
 
             res.cookie("accessToken", accessToken, {
                 httpOnly: true,
-                domain: "localhost",
+                domain: Config.MAIN_DOMAIN,
                 maxAge: 1000 * 60 * 60, // 1 hour
                 sameSite: "lax",
             });
 
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
-                domain: "localhost",
+                domain: Config.MAIN_DOMAIN,
                 maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
                 sameSite: "lax",
             });
@@ -203,14 +203,14 @@ export class AuthController {
 
             res.cookie("accessToken", accessToken, {
                 httpOnly: true,
-                domain: "localhost",
+                domain: Config.MAIN_DOMAIN,
                 maxAge: 1000 * 60 * 60, // 1 hour
                 sameSite: "lax",
             });
 
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
-                domain: "localhost",
+                domain: Config.MAIN_DOMAIN,
                 maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
                 sameSite: "lax",
             });
@@ -282,14 +282,14 @@ export class AuthController {
                 });
 
             res.cookie("accessToken", accessToken, {
-                domain: "localhost",
+                domain: Config.MAIN_DOMAIN,
                 sameSite: "strict",
                 maxAge: 1000 * 60 * 60, // ✅ fixed: 1 hour
                 httpOnly: true,
             });
 
             res.cookie("refreshToken", refreshToken, {
-                domain: "localhost",
+                domain: Config.MAIN_DOMAIN,
                 sameSite: "strict",
                 maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
                 httpOnly: true,

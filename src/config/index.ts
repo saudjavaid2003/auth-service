@@ -23,7 +23,8 @@ const {
     JWKS_URI,
     PRIVATE_KEY,
     clientUI,
-    adminUI
+    adminUI,
+    MAIN_DOMAIN
 } = process.env;
 
 export const Config = {
@@ -38,6 +39,7 @@ export const Config = {
     JWKS_URI,
     PRIVATE_KEY
     ,clientUI,
-    adminUI
+    adminUI,
+    MAIN_DOMAIN
   
 };
