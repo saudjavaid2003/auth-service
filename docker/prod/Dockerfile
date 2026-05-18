@@ -1,34 +1,47 @@
-# ----------- Builder Stage -----------
-FROM node:18-alpine AS builder
+# syntax=docker/dockerfile:1
 
-WORKDIR /app
+ARG NODE_VERSION=21.7.1
 
-# Copy package files and install dependencies
-COPY package*.json ./
-RUN npm ci
+FROM node:${NODE_VERSION}-alpine as builder
 
-# Copy all source code
+
+WORKDIR /home/node/app
+
+
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci
+
+
 COPY . .
 
-# Build TypeScript
+
 RUN npm run build
 
 
-# ----------- Production Stage -----------
-FROM node:18-alpine AS production
+FROM node:${NODE_VERSION}-alpine as runner
+
+USER node
+
+RUN mkdir -p /home/node/app
+
+WORKDIR /home/node/app
 
 ENV NODE_ENV=production
-WORKDIR /app
 
-# Copy package files and install only prod dependencies
-COPY package*.json ./
-RUN npm ci --ignore-scripts
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev --ignore-scripts
 
-# Copy built files from builder
-COPY --from=builder /app/dist ./
 
-# Expose port
-EXPOSE 5500
+COPY --from=builder --chown=node:node /home/node/app/dist ./
 
-# Run server (matches your structure: dist/src/server.js)
+EXPOSE 5501
+
+
+
 CMD ["node", "src/server.js"]
+
+

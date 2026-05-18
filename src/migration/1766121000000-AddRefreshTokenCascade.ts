@@ -1,6 +1,8 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class AddRefreshTokenCascade1699475145577 implements MigrationInterface {
+export class AddRefreshTokenCascade1766121000000 implements MigrationInterface {
+  name = "AddRefreshTokenCascade1766121000000";
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       ALTER TABLE "refreshTokens"
