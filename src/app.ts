@@ -9,9 +9,11 @@ import authroutes from "./routes/auth";
 import tenantrouter from"./routes/tenant"
 import userrouter from "./routes/user"
 import cors from "cors"
+import { Config } from "./config";
 const app = express();
+const allowedOrigins = [Config.clientUI, Config.adminUI] 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: allowedOrigins,
     credentials: true
 }))
 app.use(cookieParser());

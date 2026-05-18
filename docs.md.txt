@@ -41,3 +41,6 @@ lekin fiada is liya nai kiounkay usko jwks endpoint nai mil raha wo public folde
 docker .host.intenral kernay say chal raha contianer lekin koi endpoint workn nai karay gha jwks ka error ay ga 
 to sun gour say jub code push kerna to bas tokenservice ki file may jah ker private key ko config  say read ker 
 aur npm run dev kertay hoay certs file say bas ya 
+
+wasay ma nay .end.dev may dhal di ah .env.test may bhi private ki dhal di ha code locally bhi chal raha ha aur 
+github runners ko masla bhi nai lekin phir bhi jo keh raha houn wasay hi karain

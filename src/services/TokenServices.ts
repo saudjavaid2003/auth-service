@@ -15,10 +15,9 @@ import { config } from "dotenv";
 
 export class TokenService {
     constructor(private refreshTokenRepository: Repository<RefreshToken>) {}
-    // husnain aghar ci pipeline fail ho to yahan per shai kerna ha code ma bhej doun gha 
-    // wo private key ko github secrets may dhond raha ho gha testers jo chal rahay hain wahan per unkay lia nai to code kabhi push hi nai ho gha nai to pipeline bend ker dein ma chala loun gha 
-generateAccessToken(payload: JwtPayload) {
-       let privateKey: string;
+    
+    generateAccessToken(payload: JwtPayload) {
+     let privateKey: string;
        if(!Config.PRIVATE_KEY){
          const error = createHttpError(
                 500,
@@ -39,12 +38,13 @@ generateAccessToken(payload: JwtPayload) {
         }
         const accessToken = sign(payload, privateKey, {
             algorithm: "RS256",
-            expiresIn: "1d",
+            expiresIn: "1h",
             issuer: "auth-service",
         });
 
         return accessToken;
     }
+
     generateRefreshToken(payload: JwtPayload) {
         const refreshToken = sign(payload, Config.REFRESH_TOKEN_SECRET!, {
             algorithm: "HS256",
