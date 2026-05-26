@@ -21,7 +21,6 @@ const {
     DB_NAME,
     REFRESH_TOKEN_SECRET,
     JWKS_URI,
-    PRIVATE_KEY,
     clientUI,
     adminUI,
     MAIN_DOMAIN
@@ -37,8 +36,7 @@ export const Config = {
     DB_NAME,
     REFRESH_TOKEN_SECRET,
     JWKS_URI,
-    PRIVATE_KEY
-    ,clientUI,
+    clientUI,
     adminUI,
     MAIN_DOMAIN
   

@@ -17,18 +17,12 @@ export class TokenService {
     constructor(private refreshTokenRepository: Repository<RefreshToken>) {}
     
     generateAccessToken(payload: JwtPayload) {
-     let privateKey: string;
-       if(!Config.PRIVATE_KEY){
-         const error = createHttpError(
-                500,
-                "secret not found"
-            );
-            throw error;
-
-       }
+        let privateKey: Buffer;
 
         try {
-            privateKey =Config.PRIVATE_KEY;
+            privateKey = fs.readFileSync(
+                path.join(__dirname, "../../certs/private.pem"),
+            );
         } catch (err) {
             const error = createHttpError(
                 500,
@@ -36,6 +30,7 @@ export class TokenService {
             );
             throw error;
         }
+
         const accessToken = sign(payload, privateKey, {
             algorithm: "RS256",
             expiresIn: "1h",
