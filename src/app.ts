@@ -22,8 +22,7 @@ app.use(express.static("public"))
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/",async  (req: Request, res: Response,next: NextFunction) => {
-    const error = createHttpError(418, "This is a custom error message");
-    next(error);
+  res.send("Welcome to the Multi-Tenant Authentication API");
 });
 app.use("/auth",authroutes)
 app.use("/tenants",tenantrouter)

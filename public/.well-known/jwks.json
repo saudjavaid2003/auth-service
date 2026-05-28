@@ -1,10 +1,10 @@
 {
   "keys": [
-    {
-      "kty": "RSA",
-      "use": "sig",
-      "n": "AJ_OmGVC9Il7avoFk3CUc2NcPkBzS0YCcQ1o1945wwbBJnorsy6Y-fLq4VSC45iHPdIW7dJED8b38mxYbFPCOI1HB0HdHU2vNFzS1mE-u46tx47D7_Nmx_-P0JhJpx-A5zkWg-anvjKXsL_EyYsQNZqglcZQhzlRXryhhktjqfwlAZrCdNdf04NlPAJYpXSHJ8iALNeX8fBQHxXgS28xyC4l_3Vkyk-3kQoEVvcmFjbFoDcjO2EgensP4xzTzGvoMe_FMQmseK4VYLiyNYI4-NbppdQ-s5OtMFUOW7R-7tD1fKVT0LkBlH2yqm1H5RgGApmJNZrNHpkJr4Kl-mVnFxs",
-      "e": "AQAB"
-    }
+{
+  "kty": "RSA",
+  "use": "sig",
+  "n": "AM8uIzcW7BOrddy98D4HB-MRPkS80U2pat1oba3ExVHWPNcRIYaY4e7pST1oMLsQaE7SyLNX1KezKY6ZthXfla2vJR5LdxDXh7ESkxstsIrtzGI48b4IC7QZiiYF5Tk-DmSNQ2o2Au0dm8whR989y4hzmrJJc2MWJR5GANNKYe0KdpV6nEeuuVi-_SGD6_O3xbCY3wzE66v5Y45kCx7hXQX9ogW8Ry0m4BZNPH3ITfXh3PRCnj6L305-wlf053eD3M0D9xya6-MA11sHA08XnchpCj5YoMwR0i_eW4EF1DT-n4vSO47yRUSlx1sV4SnUGCd9RsfnIygO-PdqOVyaAlE",
+  "e": "AQAB"
+}
   ]
 }
