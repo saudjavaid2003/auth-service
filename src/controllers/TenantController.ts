@@ -65,26 +65,27 @@ export class TenantController {
         }
     }
 
-    async getAll(req: Request, res: Response, next: NextFunction) {
-        const validatedQuery = matchedData(req, { onlyValidData: true });
-        try {
-            const [tenants, count] = await this.tenantService.getAll(
-                validatedQuery as TenantQueryParams,
-            );
+   async getAll(req: Request, res: Response, next: NextFunction) {
+    const validatedQuery = matchedData(req, { onlyValidData: true });
+    try {
+        const [tenants, count] = await this.tenantService.getAll(
+            validatedQuery as TenantQueryParams,
+        );
 
-            this.logger.info("All tenant have been fetched");
-            res.json({
-                currentPage: validatedQuery.currentPage as number,
-                perPage: validatedQuery.perPage as number,
-                total: count,
-                data: tenants,
-            });
+        this.logger.info("All tenant have been fetched");
+        
+        // Return here ensures execution stops dead in its tracks
+        return res.json({
+            currentPage: validatedQuery.currentPage as number,
+            perPage: validatedQuery.perPage as number,
+            total: count,
+            data: tenants,
+        });
 
-            res.json(tenants);
-        } catch (err) {
-            next(err);
-        }
+    } catch (err) {
+        next(err);
     }
+}
 
     async getOne(req: Request, res: Response, next: NextFunction) {
         const tenantId = req.params.id;
